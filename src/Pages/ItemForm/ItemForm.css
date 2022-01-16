@@ -1,0 +1,16 @@
+.item-form{
+    width: 50em;
+    margin: 0 auto;
+    /* border-width:2px;
+    border-style:solid;
+    border-color:black; */
+    
+}
+
+.input-form{
+    padding: 30px;
+}
+
+.form-title{
+    margin-bottom: 30px;
+}
