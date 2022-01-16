@@ -1,0 +1,9 @@
+/* override bootstrap navbar colors */
+.navbar,
+.navbar-default {
+    background-color: #e9b77c !important; /* override background image gradient w/ flat color */
+}
+
+.nav-link.cart-icon {
+    margin-left: auto !important;
+}
