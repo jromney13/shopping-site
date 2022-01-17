@@ -19,8 +19,9 @@ export default function ItemCard({cardData}) {
         // prevents navigation to itemDetails page
         e.stopPropagation();
 
+        // adds item to cart and updates state using CartContext
         cart.push(cardData)
-        dispatch({type: 'ADD', payload: cart})
+        dispatch({type: 'UPDATE_CART', payload: cart})
 
         navigate('/cart')
     }

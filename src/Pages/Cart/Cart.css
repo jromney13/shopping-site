@@ -1,0 +1,18 @@
+.table-div{
+    width: 60em;
+    margin: 0 auto;
+    padding: 50px;
+}
+
+.add-button ,.sub-button{
+    margin: 0px 2px;
+    float: right;
+    width: 40px;
+}
+
+.delete-button{
+    background-color: red;
+    margin: 0px 2px;
+    float: right;
+    width: 40px;
+}

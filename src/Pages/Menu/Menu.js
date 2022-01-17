@@ -13,8 +13,6 @@ export default function Menu() {
         null
     )
 
-    console.log(cart)
-
     return (
         <div className='menu'>
             <div className="item-container">
