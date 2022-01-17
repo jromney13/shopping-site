@@ -1,6 +1,7 @@
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Form, Button, Row, Col, FormControl, InputGroup } from 'react-bootstrap'
 import { projectStorage } from "../../firebase/config"
+import { useFirestore } from "../../Hooks/useFirestore"
 
 import styles from './ItemForm.css'
 
@@ -13,12 +14,12 @@ export default function ItemForm() {
     const [pic, setPic] = useState('')
     const [inventory, setInventory] = useState('')
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        await onFileSubmit()
+    const { addDocument } = useFirestore('items')
+    const firstUpdate = useRef(true);
 
-        console.log(desc, title, price, picURL, inventory)
-        // TODO: Add item entry to firebase
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        onFileSubmit()
     }
 
     const onFileSubmit = async () => {
@@ -26,15 +27,41 @@ export default function ItemForm() {
             return;
 
         // add file to firebase storage
+        var next = () => {}
+        var error = () => {console.log("Error uploading pic")}
+        var complete = () => {
+            console.log('Pic Upload Complete')
+            const URL = imageRef.getDownloadURL().then((url) => {
+                setPicURL(url)
+            })   
+        };
+
         const imageRef = projectStorage.ref(`/${pic.name}`)
-        await imageRef.put(pic)
+        const uploadTask = imageRef.put(pic)
 
-        // get the url for the image and update state
-        setPicURL(await imageRef.getDownloadURL().toString())
-
-        console.log(picURL)
-
+        uploadTask.on('state_changed', {
+            'next': next,
+            'error': error,
+            'complete': complete
+          });   
     }
+
+    useEffect(() => {
+        if(firstUpdate.current){
+            firstUpdate.current = false;
+            return
+        }
+
+        // Add item to database
+        return addDocument({
+            title,
+            desc,
+            price,
+            inventory,
+            picURL
+        })
+        
+    }, [picURL])
 
     return (
         <div className="item-form">
@@ -47,6 +74,7 @@ export default function ItemForm() {
                             type="text"
                             onChange={(e) => setTitle(e.target.value)}
                             value={title}
+                            required
                          />
                     </Col>
                 </Form.Group>
@@ -58,6 +86,7 @@ export default function ItemForm() {
                             as="textarea"
                             onChange={(e) => setDesc(e.target.value)}
                             value={desc}
+                            required
                         />
                     </Col>
                 </Form.Group>
@@ -69,6 +98,7 @@ export default function ItemForm() {
                             type="number" 
                             onChange={(e) => setPrice(e.target.value)}
                             value={price}
+                            required
                         />
                     </Col>
                 </Form.Group>
@@ -80,6 +110,7 @@ export default function ItemForm() {
                             type="number" 
                             onChange={(e) => setInventory(e.target.value)}
                             value={inventory}
+                            required
                         />
                     </Col>
                 </Form.Group>
@@ -90,6 +121,7 @@ export default function ItemForm() {
                         <Form.Control 
                             type="file"
                             onChange={(e)=> setPic(e.target.files[0])}
+                            required
                         />
                     </Col>
                 </Form.Group>
