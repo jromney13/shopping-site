@@ -16,14 +16,27 @@ export default function ItemCard({cardData}) {
     }
 
     const handleButtonClick = (e) => {
+        let found = false
+
         // prevents navigation to itemDetails page
         e.stopPropagation();
 
         // adds item to cart and updates state using CartContext
-        cart.push(cardData)
-        dispatch({type: 'UPDATE_CART', payload: cart})
 
-        navigate('/cart')
+        // if item is already in cart, increase quantity by one
+        cart.map((item) => {
+            if(item[0].id === cardData.id){
+                found = true
+                item[1] += 1
+                dispatch({type: 'UPDATE_CART', payload: cart})
+            }
+        })
+
+        // if item is not in cart. Add to cart
+        if(!found){
+            cart.push([cardData, 1])
+            dispatch({type: 'UPDATE_CART', payload: cart})
+        }
     }
 
 

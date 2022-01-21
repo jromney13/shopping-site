@@ -21,6 +21,7 @@ function App() {
             <Route path='/itemForm' element={<ItemForm />}></Route>
             <Route path='/itemDetails/:id' element={<ItemDetails />}></Route>
           </Routes>
+          <footer className='site-footer'>~ 2021 JR Sites ~</footer>
         </Router>
     </div>
   );
