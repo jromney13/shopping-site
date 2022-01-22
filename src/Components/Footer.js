@@ -17,7 +17,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className='site-footer'>
+    <div className='site-footer'>
         <div className='copyright'>~ 2021 JR Sites ~</div>
         {!user &&
           <Link to="/login">
@@ -26,7 +26,7 @@ export default function Footer() {
         {user && 
           <div className='admin' onClick={handleLogout}>Logout</div>
           }
-    </footer>
+    </div>
   )
 }
 
