@@ -37,11 +37,3 @@
   }
 }
 
-.site-footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  background-color: #e9b77c !important; /* override background image gradient w/ flat color */
-  margin-top: 20px;
-  padding: 20px;
-}
