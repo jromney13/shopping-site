@@ -8,6 +8,7 @@ import ItemForm from './Pages/ItemForm/ItemForm.js'
 import ItemDetails from './Pages/ItemDetails/ItemDetails';
 import Footer from './Components/Footer.js'
 import Login from './Pages/Login/Login'
+import Checkout from './Pages/Checkout/Checkout'
 import { useAuthContext } from './Hooks/useAuthContext';
 
 import {BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
@@ -30,6 +31,7 @@ function App() {
             <Route path='/itemDetails/:id' element={<ItemDetails />}></Route>
             {user && <Route path='/login' element={<Navigate replace to="/" />} /> }
             {!user && <Route path='/login' element={<Login />}></Route>}
+            <Route path='/checkout' element={<Checkout />}></Route>
           </Routes>
           <Footer />
         </Router>

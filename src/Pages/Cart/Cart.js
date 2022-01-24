@@ -1,6 +1,7 @@
 import { Button, Table } from 'react-bootstrap'
 import { useCartContext } from '../../Hooks/useCartContext'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import styles from './Cart.css'
 
@@ -9,9 +10,11 @@ export default function Cart() {
 
     let { cart } = useCartContext()
     const { dispatch } = useCartContext()
+    const navigate = useNavigate()
 
     const [total, setTotal] = useState(0.00)
     const [trigger, setTrigger] = useState(null)
+
 
     const handleDelete = (item) => {
         // find all items that match item id
@@ -47,7 +50,10 @@ export default function Cart() {
         setTrigger(Math.random())
     }
 
-    // TODO: Fix when cart quantity is adjusted
+    const handleCheckout = () => {
+        navigate('/checkout')
+    }
+
     useEffect(() => {
         var runningTotal = 0.00
 
@@ -56,6 +62,7 @@ export default function Cart() {
         } )
         
         setTotal(runningTotal)
+        dispatch({type: 'UPDATE_TOTAL', payload: runningTotal})
 
     }, [cart, trigger])
 
@@ -98,7 +105,8 @@ export default function Cart() {
                 }
                 {total == 0 && 
                 <p>Nothing in your cart!</p>
-                }   
+                }
+                {total != 0 && <Button onClick={handleCheckout} className="checkout-btn">Checkout</Button> }   
             </div>
         </div>
     )
