@@ -1,15 +1,19 @@
 import axios from 'axios'
-import { loadStripe } from '@stripe/stripe-js';
-import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js'
-import { Form, Button } from 'react-bootstrap'
+import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
+import { Form, Button, Modal } from 'react-bootstrap'
 import { useCartContext } from '../../Hooks/useCartContext'
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { projectFirestore, timestamp } from '../../firebase/config'
+
 
 import styles from './CheckoutForm.css'
 
 export default function CheckoutForm() {
 
-    const { total } = useCartContext()
+    let { cart, total } = useCartContext()
+    const { dispatch } = useCartContext()
+    const navigate = useNavigate()
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
@@ -17,11 +21,27 @@ export default function CheckoutForm() {
     const [city, setCity] = useState('')
     const [addressState, setAddressState] = useState('')
     const [zip, setZip] = useState('')
+    const [paymentError, setPaymentError] = useState(null)
+    const [show, setShow] = useState(false);
     
     const elements = useElements();
     const stripe = useStripe();
 
+    const handleClose = () => {
+        setShow(false)
+        setPaymentError(null)
+    };
+
+    const handleShow = () => setShow(true);
+
     const handleClick = async (e) => {
+       await authorizePayment(e)
+
+
+    }
+
+    const authorizePayment = async (e) => {
+
         console.log('Payment Triggered')
 
         e.preventDefault()
@@ -33,13 +53,63 @@ export default function CheckoutForm() {
             amount: parseFloat(total) * 100
         })
         
-        const { paymentIntent } = await stripe.confirmCardPayment(
+        const result = await stripe.confirmCardPayment(
             clientSecret.clientSecret, {
                 payment_method: {
                     card: elements.getElement(CardElement),
+                    billing_details: {
+                        address: {
+                          city: city,
+                          country: "US",
+                          line1: address,
+                          line2: null,
+                          postal_code: zip,
+                          state: addressState
+                        },
+                        email: email,
+                        name: (firstName + " " + lastName),
+                        phone: null
+                      }
                 }
             }
         )
+
+        if(result.error){
+            setPaymentError(result.error)
+            handleShow()
+        }
+        else{
+            createOrderReceipt(result.paymentIntent.id)
+        }
+    }
+
+    const createOrderReceipt = async (paymentId) => {
+        const items = []
+        const quantities = []
+
+        cart.map((item) => {
+            items.push(projectFirestore.collection('items').doc(item[0].id))
+            quantities.push(item[1])
+        })
+
+
+        const createdAt = timestamp.fromDate(new Date())
+        const doc = { firstName, lastName, email, address, city, addressState, zip, items, quantities, paymentId, createdAt}
+
+        try{
+           await projectFirestore.collection('orders').add(doc)
+        }
+        catch(err){
+            console.log(err.message)
+        }
+
+        cart = []
+        dispatch({type: 'UPDATE_CART', payload: cart})
+        total = 0.00
+        dispatch({type: 'UPDATE_TOTAL', payload: total})
+        
+        navigate('/receipt', {state: paymentId})
+    
     }
 
     return (
@@ -122,6 +192,20 @@ export default function CheckoutForm() {
                 <div className='total'>Order Total: ${total} </div>
         
                 <Button variant="primary" type="submit">Place Order</Button>
+
+                {paymentError && 
+                        <Modal show={show} onHide={handleClose}>
+                        <Modal.Header closeButton>
+                          <Modal.Title>Issue Processing Payment! </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>Please check your card information and try again.</Modal.Body>
+                        <Modal.Footer>
+                          <Button variant="secondary" onClick={handleClose}>
+                            Close
+                          </Button>
+                        </Modal.Footer>
+                      </Modal>
+                }
 
             </Form>
         </div>
