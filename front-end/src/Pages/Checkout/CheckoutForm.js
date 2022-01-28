@@ -13,7 +13,9 @@ export default function CheckoutForm() {
 
     let { cart, total } = useCartContext()
     const { dispatch } = useCartContext()
+
     const navigate = useNavigate()
+    
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
@@ -84,20 +86,30 @@ export default function CheckoutForm() {
     }
 
     const createOrderReceipt = async (paymentId) => {
-        const items = []
-        const quantities = []
+        // const items = []
+        // const quantities = []
 
-        cart.map((item) => {
-            items.push(projectFirestore.collection('items').doc(item[0].id))
-            quantities.push(item[1])
-        })
-
+        // cart.map((item) => {
+        //     items.push(projectFirestore.collection('items').doc(item[0].id))
+        //     quantities.push(item[1])
+        // })
 
         const createdAt = timestamp.fromDate(new Date())
-        const doc = { firstName, lastName, email, address, city, addressState, zip, items, quantities, paymentId, createdAt}
+        const doc = { firstName, lastName, email, address, city, addressState, zip, paymentId, createdAt, total}
+
+        console.log(cart)
 
         try{
-           await projectFirestore.collection('orders').add(doc)
+           const ref = await projectFirestore.collection('orders').add(doc)
+           cart.map( async (item) => {
+                await ref.collection('cartItems').add({
+                    title: item[0].title,
+                    desc: item[0].desc,
+                    quantity: item[1],
+                    price: item[0].price
+           })
+           
+           })
         }
         catch(err){
             console.log(err.message)
@@ -108,7 +120,7 @@ export default function CheckoutForm() {
         total = 0.00
         dispatch({type: 'UPDATE_TOTAL', payload: total})
         
-        navigate('/receipt', {state: paymentId})
+        navigate('/receipt', {state: {paymentId: paymentId}})
     
     }
 

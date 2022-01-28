@@ -1,0 +1,9 @@
+.receipt-container{
+    display: flex;
+    margin: auto;
+    width: 60%;
+}
+
+.receipt{
+    text-align: left;
+}
