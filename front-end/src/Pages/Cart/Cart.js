@@ -8,19 +8,28 @@ import styles from './Cart.css'
 
 export default function Cart() {
 
-    let { cart } = useCartContext()
+    let { cart, itemCount } = useCartContext()
     const { dispatch } = useCartContext()
     const navigate = useNavigate()
 
     const [total, setTotal] = useState(0.00)
     const [trigger, setTrigger] = useState(null)
 
-
     const handleDelete = (item) => {
         // find all items that match item id
         cart = cart.filter(i => i[0].id !== item[0].id )
         // update CartContext cart state
         dispatch({type: 'UPDATE_CART', payload: cart})
+
+        let cartItemCount = 0
+
+        // finds out how many items we have in the cart after deletion
+        cart.forEach(element => {
+            cartItemCount += element[1]
+        });
+        // updates cart item counter in navbar
+        dispatch({type: 'UPDATE_ITEMS', payload: cartItemCount})
+
     }
 
     const handleIncrease = (item) => {
@@ -30,6 +39,11 @@ export default function Cart() {
                 dispatch({type: 'UPDATE_CART', payload: cart})
             }
         })
+
+        // Adjusts cart nav bar counter
+        itemCount +=1
+        dispatch({type: 'UPDATE_ITEMS', payload: itemCount})
+
         setTrigger(Math.random())
     }
 
@@ -47,6 +61,11 @@ export default function Cart() {
                 }
             }
         })
+
+        // Adjusts cart nav bar counter
+        itemCount -= 1
+        dispatch({type: 'UPDATE_ITEMS', payload: itemCount})
+
         setTrigger(Math.random())
     }
 

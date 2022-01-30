@@ -7,6 +7,17 @@
 }
 
 .nav-link.cart-icon {
+    position: relative;
     margin-left: auto !important;
+}
+
+.item-count{
+    position: absolute;
+    background-color: grey;
+    border-radius: 25px;
+    font-size: 10px;
+    top: 3px;
+    right: 3px;
+    width: 12px;
 }
 

@@ -8,6 +8,7 @@ import styles from './ItemCard.css'
 export default function ItemCard({cardData}) {
 
     const { cart, dispatch } = useCartContext()
+    let { itemCount } = useCartContext()
     const navigate = useNavigate()
 
     const handleCardClick = () => {
@@ -37,6 +38,9 @@ export default function ItemCard({cardData}) {
             cart.push([cardData, 1])
             dispatch({type: 'UPDATE_CART', payload: cart})
         }
+
+        itemCount += 1
+        dispatch({type: 'UPDATE_ITEMS', payload: itemCount})
     }
 
 

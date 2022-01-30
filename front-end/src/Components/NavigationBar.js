@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom'
 import styles from './NavigationBar.css'
 import ShoppingBag from '../Assets/shopping-bag.svg'
 import { useAuthContext } from '../Hooks/useAuthContext'
+import { useCartContext } from '../Hooks/useCartContext'
 
 export default function NavigationBar() {
 
     const { user } = useAuthContext()
+    let { itemCount } = useCartContext()
 
     return (
         <div className='nav-div'>
@@ -28,6 +30,7 @@ export default function NavigationBar() {
                             width="30"
                             height="30"
                         />{' '}
+                        <div className='item-count'>{itemCount}</div>
                     </Nav.Link>
                 </Nav>
                 </Navbar.Collapse>

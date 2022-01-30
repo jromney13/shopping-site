@@ -8,6 +8,8 @@ export const cartReducer = (state, action) => {
             return {...state, cart: action.payload}
         case "UPDATE_TOTAL":
             return {...state, total: action.payload}
+        case "UPDATE_ITEMS":
+                return {...state, itemCount: action.payload}
         default:
             return state
     }
@@ -17,7 +19,8 @@ export const CartContextProvider = ({children}) => {
 
     const [state, dispatch] = useReducer(cartReducer, { 
         cart: [],
-        total: 0.00
+        total: 0.00,
+        itemCount: 0
     })
 
     return (
