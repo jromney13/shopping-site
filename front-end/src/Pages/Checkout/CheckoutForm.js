@@ -119,6 +119,7 @@ export default function CheckoutForm() {
         dispatch({type: 'UPDATE_CART', payload: cart})
         total = 0.00
         dispatch({type: 'UPDATE_TOTAL', payload: total})
+        dispatch({type: 'UPDATE_ITEMS', payload: 0})
         setIsPending(false)
         navigate('/receipt', {state: {paymentId: paymentId}})
     

@@ -13,9 +13,10 @@
 
 .item-count{
     position: absolute;
-    background-color: grey;
+    background-color: rgb(95, 182, 240);
     border-radius: 25px;
     font-size: 10px;
+    font-weight: bold;
     top: 3px;
     right: 3px;
     width: 12px;
