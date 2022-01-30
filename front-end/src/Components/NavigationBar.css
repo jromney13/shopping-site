@@ -2,8 +2,11 @@
 .navbar,
 .navbar-default {
     background-color: #e9b77c !important; /* override background image gradient w/ flat color */
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+
 }
 
 .nav-link.cart-icon {
     margin-left: auto !important;
 }
+

@@ -43,7 +43,7 @@ export default function ItemCard({cardData}) {
     return (
         <div className='itemCard'>
             <Card onClick={handleCardClick} style={{ width: '18rem' }}>
-                <Card.Img variant="top" src={Logo} />
+                <Card.Img variant="top" src={cardData.picURL} />
                 <Card.Body>
                     <Card.Title>{cardData.title}</Card.Title>
                     <Card.Text>

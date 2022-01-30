@@ -17,6 +17,7 @@ export default function Menu() {
         <div className='menu'>
             <div className="item-container">
                 <Container>
+                    <h2>Shop</h2>
                     <Row lg={3}>
                         {documents && documents.map((document) => (
                             <div key={document.id}>

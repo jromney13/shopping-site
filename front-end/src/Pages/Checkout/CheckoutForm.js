@@ -25,6 +25,7 @@ export default function CheckoutForm() {
     const [zip, setZip] = useState('')
     const [paymentError, setPaymentError] = useState(null)
     const [show, setShow] = useState(false);
+    const [isPending, setIsPending] = useState(false)
     
     const elements = useElements();
     const stripe = useStripe();
@@ -37,9 +38,8 @@ export default function CheckoutForm() {
     const handleShow = () => setShow(true);
 
     const handleClick = async (e) => {
+        await setIsPending(true)
        await authorizePayment(e)
-
-
     }
 
     const authorizePayment = async (e) => {
@@ -119,7 +119,7 @@ export default function CheckoutForm() {
         dispatch({type: 'UPDATE_CART', payload: cart})
         total = 0.00
         dispatch({type: 'UPDATE_TOTAL', payload: total})
-        
+        setIsPending(false)
         navigate('/receipt', {state: {paymentId: paymentId}})
     
     }
@@ -203,11 +203,12 @@ export default function CheckoutForm() {
 
                 <div className='total'>Order Total: ${total} </div>
         
-                <Button variant="primary" type="submit">Place Order</Button>
+                {!isPending && <Button variant="primary" type="submit">Place Order</Button>}
+                {isPending && <Button variant="primary" type="submit" disabled>Processing...</Button>}
 
                 {paymentError && 
                         <Modal show={show} onHide={handleClose}>
-                        <Modal.Header closeButton>
+                        <Modal.Header closeButton>  
                           <Modal.Title>Issue Processing Payment! </Modal.Title>
                         </Modal.Header>
                         <Modal.Body>Please check your card information and try again.</Modal.Body>
