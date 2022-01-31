@@ -1,0 +1,27 @@
+.item-details-container{
+    display: flex;
+    justify-content: center;
+}
+
+.item-details{
+    background-color: white;
+    width: 50%;
+    height: 100vh;
+    margin-bottom: 0px;
+}
+
+.item-image{
+    height: auto;
+    max-height: 300px;
+    width: auto;
+    max-width: 300px;
+    margin: 0px;
+}
+
+.item-title{
+    margin-top: 80px;
+}
+
+.item-price{
+    margin-bottom: 10px;
+}

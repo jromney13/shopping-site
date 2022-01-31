@@ -101,9 +101,9 @@ export default function Cart() {
                     </thead>
                     <tbody>
                         {cart && cart.map((item) => (
-                            <tr key={item[0].id}>
+                            <tr className='item-row' key={item[0].id}>
                                 <td>{item[0].title}</td>
-                                <td>{item[0].price}</td>
+                                <td>${item[0].price}</td>
                                 <td className='quantity'>
                                     {item[1]}   
                                 </td>

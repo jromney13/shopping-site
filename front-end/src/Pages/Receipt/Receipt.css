@@ -1,9 +1,31 @@
 .receipt-container{
     display: flex;
-    margin: auto;
-    width: 60%;
+    justify-content: center;
+}
+
+.receipt-body{
+    background-color: white;
+    width: 50%;
+    height: 100vh;
+    margin-bottom: 0px;
 }
 
 .receipt{
     text-align: left;
+    margin: 20px 70px
 }
+
+hr{
+    width: 80%;
+    margin: 30px auto;
+}
+
+.total-row{
+    text-align: right;
+}
+
+.ending-message{
+    text-align: center;
+    margin: 40px 70px;
+}
+
