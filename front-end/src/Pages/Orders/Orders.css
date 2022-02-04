@@ -1,0 +1,10 @@
+.order-container{
+    display: flex;
+    justify-content: center;
+}
+
+.order-body{
+    width: 60%;
+    height: 100vh;
+    margin-bottom: 0px;
+}

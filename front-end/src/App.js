@@ -14,6 +14,7 @@ import Receipt from './Pages/Receipt/Receipt';
 import { useAuthContext } from './Hooks/useAuthContext';
 
 import {BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Orders from './Pages/Orders/Orders';
 
 function App() {
 
@@ -29,12 +30,14 @@ function App() {
             <Route path='/menu' element={<Menu />}></Route>
             <Route path='/cart' element={<Cart />}></Route>
             {user && <Route path='/itemForm' element={<ItemForm />}></Route>}
-            {!user && <Route path='/itemForm' element={<Navigate replace to='/' />}></Route>}
+            {!user && <Route path='/itemForm' element={<Navigate replace to='/login' />}></Route>}
             <Route path='/itemDetails/:id' element={<ItemDetails />}></Route>
             {user && <Route path='/login' element={<Navigate replace to="/" />} /> }
             {!user && <Route path='/login' element={<Login />}></Route>}
             <Route path='/checkout' element={<Checkout />}></Route>
             <Route path='/receipt' element={<Receipt />}></Route>
+            {user && <Route path='/orders' element={<Orders />}></Route>}
+            {!user && <Route path='/orders' element={<Navigate replace to='/login' />}></Route>}
           </Routes>
           <Footer />
         </Router>

@@ -21,6 +21,7 @@ export default function NavigationBar() {
                     <Nav.Link as={Link} to="/">Home</Nav.Link>
                     <Nav.Link as={Link} to="/menu">Shop</Nav.Link>
                     {user && <Nav.Link as={Link} to="/itemform">Add Item</Nav.Link>}
+                    {user && <Nav.Link as={Link} to="/orders">Orders</Nav.Link>}
                 </Nav>
                 <Nav className="cart-icon">
                     <Nav.Link className='cart-icon' as={Link} to="/cart">
